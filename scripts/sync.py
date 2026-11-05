@@ -65,3 +65,7 @@ else:
     for filename in ["Mirsa-Setup.ipa", "Mirsa.png", "sync.sha256", "source.json"]:
         subprocess.run(["gh", "release", "upload", "setup", str(OUT / filename), "--repo", repo, "--clobber"], check=True)
     print("Published", app["version"], "bytes", len(ipa), "SHA256", hashlib.sha256(ipa).hexdigest())
+
+# Direct static endpoint is committed by the workflow only after release publication
+# succeeds (or the matching release is already synchronized).
+Path("source.json").write_bytes(encoded)

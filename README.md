@@ -10,6 +10,12 @@ Add this source to your installer
 
 https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json
 
+Direct alternative without release-download redirects
+
+https://raw.githubusercontent.com/Alaaaya/Mirsa/main/source.json
+
+Both links remain supported. The direct feed is updated automatically after successful release synchronization.
+
 Includes Mirsa Setup and Alaa Player 2.9. Setup updates are checked every 15 minutes; GitHub may delay scheduled runs. Alaa Player is preserved across updates.
 
 ## Contact
