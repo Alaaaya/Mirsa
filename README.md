@@ -1,17 +1,25 @@
-# Mirsa
+# Mirsa · مرسى
 
-Add this source to your installer:
+<p align="center"><img src="app-source/ios-app/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="128" alt="Mirsa" /></p>
+
+Mirsa for iPhone. App installation, container apps and on-device customization.
+
+## Install
+
+Add this source to your installer
 
 https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json
 
-The source, icon and setup package use Mirsa URLs. A scheduled workflow checks for new successfully published setup builds every 15 minutes. GitHub may delay scheduled runs. It can also be run manually. No personal access token is stored in this repository.
+Includes Mirsa Setup and Alaa Player 2.9. Setup updates are checked every 15 minutes; GitHub may delay scheduled runs. Alaa Player is preserved across updates.
 
-Packages are mirrored unchanged, preserving their bundle identifier and version. This repository does not rebuild the application.
+## Contact
 
-Alaa Player 2.9 is also included as the unchanged user-provided IPA. Its entry is kept in extra-apps.json and appended on every synchronization, so upstream setup updates do not remove it. The package requires signing by a compatible installer. Its icon is extracted from the package.
+[X · @rasmtk30](https://x.com/rasmtk30)
 
-## Legal and source
+## Source and build
 
-Mirsa is based on [AirCard-iOS](https://github.com/Alaaaya/AirCard-iOS) and the upstream [mak5er project](https://github.com/mak5er/AirCard-iOS). Upstream contributors include mak5er, merybist and Johnny Franks (0xjohnnydev, AirLift). NeoSpring credits include skadz108, rooootdev and neonmodder123. The complete application source and further credits are available in those repositories.
+[Complete application source](app-source), including Rust source, Cargo.lock and build scripts, is published here. See [build instructions](app-source/README.md). The branding revision in this snapshot is awaiting its validation build and integration into the active publishing branch; the current setup package can still contain earlier app branding until that integration completes.
 
-Original copyright and license notices are preserved in LICENSE and LICENSES. Source branding is not a claim of sole authorship.
+## Legal
+
+Original copyright notices, licenses and component attribution are preserved in [LICENSE](LICENSE), [LICENSES](LICENSES) and [application notices](app-source/LICENSES). Mirsa is a branded derivative and does not claim original authorship of upstream components.
