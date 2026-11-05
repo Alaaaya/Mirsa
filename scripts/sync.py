@@ -35,6 +35,14 @@ for version in app.get("versions", []):
     version["localizedDescription"] = "Mirsa Setup " + version["version"]
 source["name"] = "Mirsa"
 source["iconURL"] = PUBLIC + "Mirsa.png"  # source icon (Feather, SideStore, Mirsa)
+# Repository-owned entries survive every upstream refresh.
+extra_apps = json.loads(Path("extra-apps.json").read_text())
+seen = {entry["bundleIdentifier"] for entry in source["apps"]}
+for extra in extra_apps:
+    assert extra["bundleIdentifier"] not in seen, "Duplicate app bundle identifier"
+    assert extra["downloadURL"].startswith(PUBLIC), "Extra apps must use Mirsa assets"
+    source["apps"].append(extra)
+    seen.add(extra["bundleIdentifier"])
 encoded = (json.dumps(source, indent=2) + "\n").encode()
 assert b"aircard" not in encoded.lower()
 (OUT / "source.json").write_bytes(encoded)
