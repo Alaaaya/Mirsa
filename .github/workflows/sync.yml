@@ -18,3 +18,12 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: python3 scripts/sync.py
+      - name: Publish direct static feed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add source.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update direct Mirsa source feed"
+            git push origin HEAD:main
+          fi
