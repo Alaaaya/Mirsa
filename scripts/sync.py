@@ -34,6 +34,7 @@ for version in app.get("versions", []):
     version["downloadURL"] = PUBLIC + "Mirsa-Setup.ipa"
     version["localizedDescription"] = "Mirsa Setup " + version["version"]
 source["name"] = "Mirsa"
+source["iconURL"] = PUBLIC + "Mirsa.png"  # source icon (Feather, SideStore, Mirsa)
 encoded = (json.dumps(source, indent=2) + "\n").encode()
 assert b"aircard" not in encoded.lower()
 (OUT / "source.json").write_bytes(encoded)
