@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#090A1E" />
+    <title>مرسى · Mirsa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400&display=swap"
+    />
+    <link rel="stylesheet" href="hark.css" />
+    <link rel="stylesheet" href="hark-hero.css" />
+    <style>
+      :root {
+        --sans: system-ui, "SF Arabic", "SF Pro Text", -apple-system, "Segoe UI", Tahoma, sans-serif;
+        --x-bg: #090A1E;
+        --x-violet: #8b5cf6;
+        --x-cyan: #22d3ee;
+        --x-pink: #ec4899;
+        --x-ink: rgba(255, 255, 255, 0.94);
+        --x-ink-2: rgba(255, 255, 255, 0.68);
+        --x-line: rgba(255, 255, 255, 0.12);
+        --x-glass: rgba(255, 255, 255, 0.06);
+        --x-grad: linear-gradient(120deg, var(--x-violet), var(--x-cyan));
+        --x-r: 26px;
+      }
+      html { background: var(--x-bg); scroll-padding-top: 96px; }
+      body { background: var(--x-bg); color: var(--x-ink); font-family: var(--sans); overflow-x: clip; }
+      body, .page { min-height: 100vh; }
+
+      /* film grain */
+      .x-grain { position: fixed; inset: 0; z-index: 60; pointer-events: none; opacity: 0.08; mix-blend-mode: soft-light;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+      /* ambient glows and floating orbs */
+      .x-sky { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        background:
+          radial-gradient(60vw 50vh at 85% 0%, rgba(139, 92, 246, 0.22), transparent 70%),
+          radial-gradient(50vw 50vh at 0% 60%, rgba(34, 211, 238, 0.12), transparent 70%),
+          radial-gradient(50vw 40vh at 100% 100%, rgba(236, 72, 153, 0.14), transparent 70%); }
+      .x-orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.45; animation: x-float 22s ease-in-out infinite alternate; }
+      .x-orb--1 { width: 340px; height: 340px; background: var(--x-violet); top: 12%; right: -80px; }
+      .x-orb--2 { width: 280px; height: 280px; background: var(--x-cyan); top: 55%; left: -90px; animation-duration: 28s; opacity: 0.3; }
+      .x-orb--3 { width: 240px; height: 240px; background: var(--x-pink); bottom: -60px; right: 30%; animation-duration: 34s; opacity: 0.3; }
+      @keyframes x-float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-40px, 50px) scale(1.08); } 100% { transform: translate(30px, -30px) scale(0.95); } }
+
+      .page { position: relative; z-index: 1; padding-top: 96px; gap: 28px; }
+      .main { gap: 28px; }
+
+      /* glass surface */
+      .x-glass { position: relative; background: linear-gradient(160deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035));
+        border: 1px solid rgba(255, 255, 255, 0.05); border-radius: var(--x-r);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 24px 60px rgba(0, 0, 0, 0.32);
+        -webkit-backdrop-filter: blur(26px) saturate(160%); backdrop-filter: blur(26px) saturate(160%); }
+      .x-glass::before { content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+        background: linear-gradient(140deg, rgba(196, 181, 253, 0.65), rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0.05) 60%, rgba(103, 232, 249, 0.5));
+        -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+        mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
+
+      /* nav pill */
+      .x-nav { transition: background var(--dur-quick), box-shadow var(--dur-quick), backdrop-filter var(--dur-quick); }
+      .x-nav.is-scrolled { background: rgba(9, 10, 30, 0.72); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 16px 40px rgba(0, 0, 0, 0.45);
+        -webkit-backdrop-filter: blur(40px) saturate(190%); backdrop-filter: blur(40px) saturate(190%); }
+      .x-nav { position: fixed; top: max(12px, env(safe-area-inset-top)); inset-inline: 0; margin: 0 auto; z-index: 50;
+        width: min(calc(100% - 24px), 980px); display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: var(--r-pill); }
+      .x-nav__brand { display: flex; align-items: center; gap: 8px; text-decoration: none; font: var(--type-body-strong); padding-inline: 6px; min-height: var(--tap); }
+      .x-nav__brand img { width: 30px; height: 30px; border-radius: 8px; }
+      .x-nav__links { display: flex; gap: 2px; margin-inline-start: auto; overflow-x: auto; scrollbar-width: none; }
+      .x-nav__links::-webkit-scrollbar { display: none; }
+      .x-nav__links a { white-space: nowrap; text-decoration: none; color: var(--x-ink-2); font: var(--type-label); padding: 0 12px; min-height: var(--tap); display: flex; align-items: center; border-radius: var(--r-pill); transition: color var(--dur-quick), background var(--dur-quick); }
+      .x-nav__links a:hover { color: var(--x-ink); background: rgba(255, 255, 255, 0.08); }
+      .x-lang { flex: none; min-width: var(--tap); min-height: var(--tap); border-radius: var(--r-pill); border: 1px solid var(--x-line); background: rgba(255, 255, 255, 0.06); color: var(--x-ink); font: var(--type-tag); cursor: pointer; padding: 0 12px; }
+      .x-lang:hover { background: rgba(255, 255, 255, 0.12); }
+      @media (max-width: 720px) { .x-nav__links { display: none; } .x-lang { margin-inline-start: auto; } }
+
+      /* buttons */
+      .x-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 24px; border-radius: var(--r-pill); text-decoration: none; font: var(--type-body-strong); color: var(--x-ink); border: 1px solid var(--x-line); background: rgba(255, 255, 255, 0.07); transition: transform var(--dur-quick) var(--ease-out), box-shadow var(--dur-quick); }
+      .x-btn:hover { transform: translateY(-2px); }
+      .x-btn:not(.x-btn--main) { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 8px 24px rgba(0, 0, 0, 0.2);
+        -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%); }
+      .x-btn:not(.x-btn--main):hover { background: rgba(255, 255, 255, 0.14); }
+      .x-btn--main { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(120deg, var(--x-violet), #6366f1 45%, var(--x-cyan)); border-color: transparent; color: #fff; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+      .x-btn--main::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 45%; z-index: -1; pointer-events: none; background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.5), transparent); transform: skewX(-20deg); animation: x-shine 3.6s ease-in-out infinite; }
+      .x-btn--main:hover { box-shadow: 0 14px 38px rgba(34, 211, 238, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.35); }
+      @keyframes x-shine { 0%, 55% { left: -60%; } 100% { left: 130%; } }
+      .x-btn svg { width: 20px; height: 20px; flex: none; }
+      .x-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: var(--r-pill); font: var(--type-tag); border: 1px solid rgba(34, 211, 238, 0.35); background: rgba(34, 211, 238, 0.08); color: var(--x-ink); }
+      .x-badge::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--x-cyan); animation: x-pulse 2s ease-out infinite; }
+      @keyframes x-pulse { 0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.75); } 70% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); } 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); } }
+
+      /* hero */
+      .x-hero { position: relative; overflow: hidden; isolation: isolate; border-radius: 32px; border: 1px solid var(--x-line); min-height: 660px; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); align-items: center; gap: 32px; padding: clamp(28px, 6vw, 64px); }
+      .x-hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; z-index: -2; }
+      .x-hero::after { content: ""; position: absolute; inset: 0; z-index: -1;
+        background: linear-gradient(to bottom, rgba(9, 10, 30, 0) 55%, #090A1E 100%), linear-gradient(to left, rgba(9, 10, 30, 0.88) 0%, rgba(9, 10, 30, 0.45) 50%, rgba(9, 10, 30, 0.1) 100%); }
+      [dir="ltr"] .x-hero::after { background: linear-gradient(to bottom, rgba(9, 10, 30, 0) 55%, #090A1E 100%), linear-gradient(to right, rgba(9, 10, 30, 0.88) 0%, rgba(9, 10, 30, 0.45) 50%, rgba(9, 10, 30, 0.1) 100%); }
+      [dir="ltr"] .x-hero__bg { transform: scaleX(-1); }
+      .x-hero__copy { position: relative; z-index: 1; max-width: 560px; display: grid; gap: 20px; justify-items: start; }
+      .x-icon { width: 104px; height: 104px; border-radius: 23px; box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15), 0 0 60px rgba(139, 92, 246, 0.6), 0 0 120px rgba(34, 211, 238, 0.25); }
+      .x-iconwrap { position: relative; isolation: isolate; width: 128px; height: 128px; margin: 10px; animation: x-bob 6s ease-in-out infinite; }
+      .x-iconwrap::before { content: ""; position: absolute; inset: -14px; z-index: -1; border-radius: 50%; background: conic-gradient(from 0deg, var(--x-violet), var(--x-cyan), var(--x-pink), var(--x-violet)); filter: blur(20px); opacity: 0.8; animation: x-spin 7s linear infinite; }
+      .x-iconwrap .x-icon { width: 128px; height: 128px; border-radius: 29px; }
+      @keyframes x-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+      @keyframes x-spin { to { transform: rotate(360deg); } }
+      .x-shimmer { background: linear-gradient(110deg, #fff 20%, #c4b5fd 38%, #67e8f9 50%, #c4b5fd 62%, #fff 80%); background-size: 200% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: x-shimmer 6s linear infinite; }
+      @keyframes x-shimmer { from { background-position: 0% 50%; } to { background-position: 200% 50%; } }
+      .x-hero h1 { font-size: clamp(56px, 11vw, 96px); line-height: 1; font-weight: 600; letter-spacing: -0.01em; padding-block: 6px; }
+      .x-hero__sub { font-size: clamp(20px, 3.4vw, 26px); line-height: 1.45; font-weight: 500; }
+      .x-hero__line { color: var(--x-ink-2); font-size: 17px; line-height: 1.7; }
+      .x-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .x-trust { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+      .x-trust li { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border-radius: var(--r-pill); font: var(--type-tag); color: var(--x-ink); background: rgba(255, 255, 255, 0.07); border: 1px solid var(--x-line); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+      .x-trust svg { width: 14px; height: 14px; flex: none; stroke: var(--x-cyan); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+      /* phone mockup */
+      .x-phonewrap { position: relative; z-index: 1; display: grid; place-items: center; transform: rotate(-4deg); }
+      [dir="ltr"] .x-phonewrap { transform: rotate(4deg); }
+      .x-phone { width: 260px; aspect-ratio: 9 / 19; border-radius: 46px; padding: 10px; background: linear-gradient(145deg, #34355a, #0d0e22 60%, #24254a); animation: x-bob 7s ease-in-out infinite;
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 0 0 2px rgba(255, 255, 255, 0.08), 0 40px 80px rgba(0, 0, 0, 0.55), 0 0 90px rgba(139, 92, 246, 0.4); }
+      .x-screen { height: 100%; border-radius: 37px; overflow: hidden; display: flex; flex-direction: column; gap: 14px; padding: 12px 14px 12px; color: #fff;
+        background: radial-gradient(120% 60% at 80% 0%, rgba(139, 92, 246, 0.6), transparent 60%), radial-gradient(100% 50% at 0% 100%, rgba(34, 211, 238, 0.35), transparent 60%), #0c0d26; }
+      .x-status { direction: ltr; display: flex; align-items: center; justify-content: space-between; font: 600 12px/1 var(--sans); padding-inline: 8px; }
+      .x-status i { width: 80px; height: 24px; border-radius: 14px; background: #000; }
+      .x-status b { font-weight: 600; letter-spacing: 1px; }
+      .x-scr-head { display: flex; align-items: center; justify-content: space-between; padding-inline: 2px; }
+      .x-scr-head strong { font-size: 22px; font-weight: 600; }
+      .x-scr-head img { width: 28px; height: 28px; border-radius: 8px; }
+      .x-appscard { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px; border-radius: 20px; background: rgba(255, 255, 255, 0.12); border: 1px solid rgba(255, 255, 255, 0.18); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+      .x-appscard span { display: grid; gap: 2px; }
+      .x-appscard b { font-size: 15px; font-weight: 600; }
+      .x-appscard small { font-size: 12px; color: var(--x-ink-2); }
+      .x-ring { position: relative; flex: none; width: 60px; height: 60px; display: grid; place-items: center; font-size: 12px; font-weight: 600; white-space: nowrap; }
+      .x-ring::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--x-cyan), var(--x-violet) 86%, rgba(255, 255, 255, 0.15) 0);
+        -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px)); mask: radial-gradient(farthest-side, transparent calc(100% - 6px), #000 calc(100% - 5px)); filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.6)); }
+      .x-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 10px; padding-inline: 2px; }
+      .x-grid i { aspect-ratio: 1; border-radius: 12px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); background: linear-gradient(140deg, var(--x-violet), #6366f1); }
+      .x-grid i:nth-child(4n + 2) { background: linear-gradient(140deg, var(--x-cyan), #3b82f6); }
+      .x-grid i:nth-child(4n + 3) { background: linear-gradient(140deg, var(--x-pink), #f97316); }
+      .x-grid i:nth-child(4n + 4) { background: linear-gradient(140deg, #34d399, #0ea5e9); }
+      .x-grid i:nth-child(n + 5) { opacity: 0.85; }
+      .x-tabbar { margin-top: auto; display: flex; justify-content: space-around; padding: 10px 6px; border-radius: 24px; background: rgba(255, 255, 255, 0.13); border: 1px solid rgba(255, 255, 255, 0.2); -webkit-backdrop-filter: blur(16px) saturate(170%); backdrop-filter: blur(16px) saturate(170%); }
+      .x-tabbar svg { width: 20px; height: 20px; stroke: rgba(255, 255, 255, 0.6); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .x-tabbar svg:first-child { stroke: var(--x-cyan); filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.7)); }
+
+      @media (max-width: 860px) {
+        .x-hero { grid-template-columns: minmax(0, 1fr); }
+      }
+      @media (max-width: 640px) {
+        .page { padding-top: 0; }
+        .x-hero { margin-inline: calc(var(--gutter) * -1); border-radius: 0; border: 0; min-height: 0; padding: 92px var(--gutter) 40px; justify-items: center; text-align: center; gap: 36px; }
+        .x-hero__bg { height: 72%; object-position: center top; }
+        .x-hero::after, [dir="ltr"] .x-hero::after { background: linear-gradient(to bottom, rgba(9, 10, 30, 0.35) 0%, rgba(9, 10, 30, 0.6) 40%, #090A1E 72%); }
+        .x-hero__copy { justify-items: center; }
+        .x-trust { justify-content: center; }
+        .x-actions, .x-actions .x-btn { width: 100%; }
+        .x-phonewrap, [dir="ltr"] .x-phonewrap { transform: none; }
+        .x-phone { width: 236px; }
+      }
+
+      /* section heads */
+      .x-sec { padding-top: 40px; display: grid; gap: 24px; }
+      .x-head { display: grid; gap: 10px; max-width: 640px; }
+      .x-eyebrow { font: var(--weight-medium) 14px/1.4 var(--sans); letter-spacing: 0.06em; text-transform: uppercase; background: var(--x-grad); -webkit-background-clip: text; background-clip: text; color: transparent; justify-self: start; }
+      .x-head h2 { font-size: clamp(30px, 6vw, 50px); line-height: 1.2; font-weight: 600; letter-spacing: -0.01em; }
+      .x-head p.x-sub { color: var(--x-ink-2); font-size: 17px; line-height: 1.7; }
+
+      /* highlights */
+      .x-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+      .x-tile { padding: 26px 22px; display: grid; gap: 8px; align-content: start; }
+      .x-tile__fig { font-size: clamp(40px, 6vw, 56px); line-height: 1.1; font-weight: 600; background: var(--x-grad); -webkit-background-clip: text; background-clip: text; color: transparent; justify-self: start; }
+      .x-tile__label { color: var(--x-ink-2); font-size: 16px; line-height: 1.5; }
+      @media (max-width: 860px) { .x-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+      /* features */
+      .x-feats { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+      .x-feat { padding: 24px; display: grid; gap: 10px; align-content: start; transition: transform var(--dur-quick) var(--ease-out), border-color var(--dur-quick); }
+      .x-feat:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.22); }
+      .x-ico { width: 48px; height: 48px; border-radius: 15px; display: grid; place-items: center; background: linear-gradient(140deg, rgba(139, 92, 246, 0.75), rgba(34, 211, 238, 0.45)); border: 1px solid rgba(255, 255, 255, 0.25); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 22px rgba(139, 92, 246, 0.55), 0 0 40px rgba(34, 211, 238, 0.2); }
+      .x-feat:hover .x-ico { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 0 30px rgba(139, 92, 246, 0.8), 0 0 54px rgba(34, 211, 238, 0.35); }
+
+      /* feature marquee */
+      .x-marquee { overflow: hidden; direction: ltr; padding-block: 4px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+      .x-marquee__track { display: flex; width: max-content; animation: x-marquee 45s linear infinite; }
+      .x-marquee:hover .x-marquee__track { animation-play-state: paused; }
+      .x-marquee ul { display: flex; gap: 10px; padding: 0 10px 0 0; margin: 0; list-style: none; }
+      .x-marquee li { white-space: nowrap; padding: 10px 18px; border-radius: var(--r-pill); font-size: 15px; font-weight: 500; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--x-line); }
+      .x-marquee li::before { content: "✦"; margin-inline-end: 8px; color: var(--x-cyan); }
+      @keyframes x-marquee { to { transform: translateX(-50%); } }
+      .x-ico svg { width: 22px; height: 22px; stroke: #fff; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+      .x-feat h3 { font-size: 18px; font-weight: 600; line-height: 1.4; }
+      .x-feat p { color: var(--x-ink-2); font-size: 15px; line-height: 1.7; }
+      .x-tag { display: inline-block; font: var(--type-caption); padding: 2px 10px; border-radius: var(--r-pill); background: rgba(236, 72, 153, 0.18); border: 1px solid rgba(236, 72, 153, 0.4); color: #fbcfe8; vertical-align: middle; margin-inline-start: 6px; }
+
+      /* install */
+      .x-install { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+      @media (max-width: 860px) { .x-install { grid-template-columns: minmax(0, 1fr); } }
+      .x-steps { position: relative; list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: s; }
+      .x-steps::before { content: ""; position: absolute; inset-inline-start: 23px; top: 24px; bottom: 24px; width: 2px; border-radius: 2px; background: linear-gradient(var(--x-violet), var(--x-cyan), var(--x-pink)); opacity: 0.7; }
+      .x-steps li { counter-increment: s; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; }
+      .x-num { position: relative; z-index: 1; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; font-size: 20px; font-weight: 600; color: #fff; background: var(--x-grad);
+        box-shadow: 0 0 0 5px var(--x-bg), 0 0 24px rgba(139, 92, 246, 0.75), 0 0 46px rgba(34, 211, 238, 0.3); }
+      .x-num::before { content: counter(s, arabic-indic); }
+      [dir="ltr"] .x-num::before { content: counter(s); }
+      .x-step { padding: 16px 20px; font-size: 16px; line-height: 1.7; }
+      .x-side { display: grid; gap: 14px; position: sticky; top: 96px; }
+      .x-card { padding: 24px; display: grid; gap: 12px; }
+      .x-card h3 { font-size: 18px; font-weight: 600; }
+      .x-card p { color: var(--x-ink-2); line-height: 1.7; }
+      .x-req { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+      .x-req li { display: flex; gap: 10px; align-items: flex-start; line-height: 1.6; }
+      .x-req li::before { content: ""; flex: none; width: 18px; height: 18px; margin-top: 3px; border-radius: 50%; background: var(--x-grad); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-1.5 17.2-5-5 1.6-1.6 3.4 3.4 7-7 1.6 1.6z'/%3E%3C/svg%3E") center/contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-1.5 17.2-5-5 1.6-1.6 3.4 3.4 7-7 1.6 1.6z'/%3E%3C/svg%3E") center/contain no-repeat; }
+      .x-tip { border-style: dashed; border-color: rgba(34, 211, 238, 0.4); }
+
+      /* copy rows */
+      .x-copy { display: flex; align-items: center; gap: 8px; padding: 6px; padding-inline-start: 14px; border-radius: 16px; background: rgba(0, 0, 0, 0.28); border: 1px solid var(--x-line); }
+      .x-copy code { flex: 1; min-width: 0; direction: ltr; text-align: left; font: 13px/1.5 ui-monospace, "SF Mono", Menlo, monospace; color: #a5f3fc; overflow-wrap: anywhere; }
+      .x-copybtn { flex: none; min-height: var(--tap); min-width: 72px; padding: 0 16px; border-radius: 12px; border: 1px solid var(--x-line); background: rgba(255, 255, 255, 0.08); color: var(--x-ink); font: var(--type-label); cursor: pointer; transition: background var(--dur-quick); }
+      .x-copybtn:hover { background: rgba(255, 255, 255, 0.16); }
+      .x-copybtn { transition: background var(--dur-quick), box-shadow var(--dur-quick), color var(--dur-quick); }
+      .x-copybtn.is-done { background: var(--fill-system-green); border-color: transparent; color: #fff; box-shadow: 0 0 18px rgba(0, 166, 101, 0.55); }
+      .x-copybtn.is-done::before { content: "✓"; margin-inline-end: 6px; font-weight: 600; }
+      .x-sources { display: grid; gap: 12px; }
+      .x-source { padding: 16px 18px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 16px; align-items: center; }
+      .x-source h3 { font-size: 17px; font-weight: 600; min-width: 96px; direction: ltr; }
+      @media (max-width: 640px) { .x-source { grid-template-columns: minmax(0, 1fr); gap: 10px; } }
+
+      /* auto refresh flow */
+      .x-flow { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+      .x-flow li { padding: 12px 18px; border-radius: var(--r-pill); background: rgba(255, 255, 255, 0.07); border: 1px solid var(--x-line); font-weight: 500; }
+      .x-flow li.x-arrow { padding: 0; border: 0; background: none; color: var(--x-cyan); font-size: 20px; }
+      [dir="ltr"] .x-flow li.x-arrow { transform: scaleX(-1); }
+
+      /* faq */
+      .x-faq { display: grid; gap: 10px; }
+      .x-faq details { padding: 0; border-radius: 22px; overflow: hidden; }
+      .x-faq summary { list-style: none; cursor: pointer; padding: 18px 22px; min-height: var(--tap); display: flex; justify-content: space-between; align-items: center; gap: 16px; font-size: 17px; font-weight: 600; }
+      .x-faq summary::-webkit-details-marker { display: none; }
+      .x-faq summary::after { content: "+"; flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(255, 255, 255, 0.08); font-size: 20px; font-weight: 400; transition: transform var(--dur-quick) var(--ease-out); }
+      .x-faq summary::after { transition: transform 0.35s var(--ease-out), background 0.35s; }
+      .x-faq details[open] summary::after { transform: rotate(135deg); background: var(--x-grad); }
+      .x-faq details.is-closing summary::after { transform: rotate(0deg); background: rgba(255, 255, 255, 0.08); }
+
+      /* final call to action */
+      .x-cta { overflow: hidden; text-align: center; display: grid; justify-items: center; gap: 18px; padding: clamp(36px, 7vw, 72px) clamp(20px, 5vw, 48px);
+        background: radial-gradient(80% 120% at 50% 0%, rgba(139, 92, 246, 0.38), transparent 70%), radial-gradient(60% 80% at 50% 100%, rgba(34, 211, 238, 0.16), transparent 70%), linear-gradient(160deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)); }
+      .x-cta h2 { font-size: clamp(36px, 8vw, 64px); line-height: 1.15; font-weight: 600; padding-block: 4px; }
+      .x-cta p { color: var(--x-ink-2); font-size: 17px; line-height: 1.7; max-width: 520px; }
+      .x-cta .x-actions { justify-content: center; }
+      .x-cta .x-icon { width: 72px; height: 72px; border-radius: 17px; }
+      .x-faq details p { padding: 0 22px 20px; color: var(--x-ink-2); line-height: 1.8; }
+
+      /* about */
+      .x-about { padding: clamp(24px, 5vw, 44px); display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+      .x-about .x-icon { width: 88px; height: 88px; border-radius: 20px; }
+      .x-about__copy { flex: 1; min-width: 220px; display: grid; gap: 14px; }
+      .x-about h2 { font-size: clamp(24px, 4vw, 32px); font-weight: 600; }
+      .x-about .x-btn { min-height: var(--tap); padding: 0 18px; font: var(--type-label); }
+
+      /* footer */
+      .x-foot { padding: 32px 4px 12px; border-top: 1px solid var(--x-line); display: grid; gap: 8px; color: var(--x-ink-2); font-size: 14px; line-height: 1.7; }
+      .x-foot strong { color: var(--x-ink); font-weight: 500; }
+      .x-foot .x-small { font-size: 13px; }
+
+      a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--x-cyan); outline-offset: 3px; }
+
+      /* fade-up on scroll */
+      .x-js .x-up { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+      .x-js .x-up.is-in { opacity: 1; transform: none; }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation: none !important; }
+        .x-btn--main::after { display: none; }
+        .x-marquee { overflow-x: auto; scrollbar-width: none; }
+        .x-orb { animation: none; }
+        .x-js .x-up { opacity: 1; transform: none; transition: none; }
+        html { scroll-behavior: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="x-grain" aria-hidden="true"></div>
+    <div class="x-sky" aria-hidden="true"><span class="x-orb x-orb--1"></span><span class="x-orb x-orb--2"></span><span class="x-orb x-orb--3"></span></div>
+
+    <nav class="x-nav x-glass" aria-label="Main">
+      <a class="x-nav__brand" href="#top"><img src="mirsa-icon.png" alt="" /><span data-i="brand">مرسى</span></a>
+      <div class="x-nav__links">
+        <a href="#features" data-i="nFeat">المزايا</a>
+        <a href="#install" data-i="nInstall">التثبيت</a>
+        <a href="#sources" data-i="nSources">السورسات</a>
+        <a href="#refresh" data-i="nRefresh">التجديد</a>
+        <a href="#faq" data-i="nFaq">الأسئلة</a>
+        <a href="#about" data-i="nAbout">المطوّر</a>
+      </div>
+      <button class="x-lang" id="x-lang" type="button" aria-label="Switch to English">EN</button>
+    </nav>
+
+    <div class="page" id="top">
+      <main class="main">
+        <section class="x-hero">
+          <img class="x-hero__bg" src="mirsa-hero.png" alt="" />
+          <div class="x-hero__copy">
+            <div class="x-iconwrap"><img class="x-icon" src="mirsa-icon.png" alt="أيقونة تطبيق مرسى" data-i-alt="iconAlt" /></div>
+            <span class="x-badge" data-i="version">الإصدار 1.3.78</span>
+            <h1 class="x-shimmer" data-i="title">مرسى</h1>
+            <p class="x-hero__sub" data-i="heroSub">ثبّت تطبيقاتك على الآيفون مباشرة، بدون كمبيوتر.</p>
+            <p class="x-hero__line" data-i="heroLine">حاوية بلا حدود، سورسات جاهزة، توقيع بشهادتك، وتحديثات تلقائية — كله من جوّا الآيفون.</p>
+            <div class="x-actions">
+              <a class="x-btn x-btn--main" href="https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-i="ctaMain">حمّل مرسى</span></a>
+              <a class="x-btn" href="https://github.com/Alaaaya/Mirsa-iOS/releases/latest/download/Mirsa.ipa" data-i="ctaSec">آخر إصدار من Mirsa.ipa</a>
+            </div>
+            <ul class="x-trust">
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-i="tr1">بدون كمبيوتر</span></li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-i="tr2">بياناتك بالـKeychain</span></li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-i="tr3">مع Apple ID مجاني</span></li>
+              <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg><span data-i="tr4">عربي و English</span></li>
+            </ul>
+          </div>
+          <div class="x-phonewrap">
+            <div class="x-phone" role="img" aria-label="معاينة شاشة مرسى الرئيسية" data-i-aria="phoneAria">
+              <div class="x-screen" aria-hidden="true">
+                <div class="x-status"><b>9:41</b><i></i><b>●●●</b></div>
+                <div class="x-scr-head"><strong data-i="brand">مرسى</strong><img src="mirsa-icon.png" alt="" /></div>
+                <div class="x-appscard">
+                  <span><b data-i="phApps">تطبيقاتك</b><small data-i="phRefresh">التجديد التلقائي</small></span>
+                  <span class="x-ring" data-i="phDays">٦ أيام</span>
+                </div>
+                <div class="x-grid"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                <div class="x-tabbar">
+                  <svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v9h-5v-6H9v6H4z"/></svg>
+                  <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
+                  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="x-tiles" aria-label="أبرز الأرقام" data-i-aria="tilesAria">
+          <div class="x-tile x-glass x-up"><span class="x-tile__fig">∞</span><span class="x-tile__label" data-i="t1">تطبيقات بالحاوية</span></div>
+          <div class="x-tile x-glass x-up"><span class="x-tile__fig" data-count="3">٣</span><span class="x-tile__label" data-i="t2">تطبيقات حقيقية بحساب Apple المجاني</span></div>
+          <div class="x-tile x-glass x-up"><span class="x-tile__fig" data-count="4">٤</span><span class="x-tile__label" data-i="t3">سورسات جاهزة</span></div>
+          <div class="x-tile x-glass x-up"><span class="x-tile__fig" data-count="7" data-unit-ar=" أيام" data-unit-en=" days">٧ أيام</span><span class="x-tile__label" data-i="t4">تجديد تلقائي كل أسبوع</span></div>
+        </section>
+
+        <section class="x-sec" id="features">
+          <div class="x-head x-up">
+            <p class="x-eyebrow" data-i="fEye">المزايا</p>
+            <h2 data-i="fTitle">كل اللي بتحتاجه لتثبّت وتدير تطبيقاتك، بمكان واحد.</h2>
+          </div>
+          <div class="x-marquee" aria-hidden="true">
+            <div class="x-marquee__track">
+              <ul><li data-i="m1">Apple ID</li><li data-i="m2">التثبيت الحقيقي</li><li data-i="m3">الحاوية</li><li data-i="m4">السورسات</li><li>Live Activity</li><li>Dynamic Island</li><li data-i="m5">محرّر IPA</li><li data-i="m6">حقن الإضافات</li><li data-i="m7">توقيع P12</li><li data-i="m8">الاختصارات</li><li data-i="m9">تحديث ذاتي</li><li data-i="m10">زجاج سائل</li></ul>
+              <ul><li data-i="m1">Apple ID</li><li data-i="m2">التثبيت الحقيقي</li><li data-i="m3">الحاوية</li><li data-i="m4">السورسات</li><li>Live Activity</li><li>Dynamic Island</li><li data-i="m5">محرّر IPA</li><li data-i="m6">حقن الإضافات</li><li data-i="m7">توقيع P12</li><li data-i="m8">الاختصارات</li><li data-i="m9">تحديث ذاتي</li><li data-i="m10">زجاج سائل</li></ul>
+            </div>
+          </div>
+          <div class="x-feats">
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></span><h3 data-i="f1t">تسجيل دخول Apple ID</h3><p data-i="f1">دخول بحسابك مع التحقق بخطوتين، والبيانات محفوظة بالـKeychain على جهازك بس.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><rect x="6" y="2" width="12" height="20" rx="3"/><path d="M12 7v7M9 11l3 3 3-3"/></svg></span><h3 data-i="f2t">التثبيت الحقيقي</h3><p data-i="f2">يوقّع التطبيق بشهادة حسابك المجانية ويثبّته على الآيفون مباشرة (حد Apple المجاني ٣ تطبيقات و١٠ App IDs بالأسبوع؛ قابل للتعديل للحسابات المدفوعة).</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M12 2 3 7v10l9 5 9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span><h3><span data-i="f3t">الحاوية (Container)</span><span class="x-tag" data-i="beta">تجريبي</span></h3><p data-i="f3">شغّل عدد غير محدود من التطبيقات من جوّا مرسى بدون ما تحسب من حدّ Apple.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></span><h3 data-i="f4t">السورسات</h3><p data-i="f4">٤ سورسات مدموجة من أول تشغيل (AppTesters، Mirsa، itslevii، ryP0)، أضف أي سورس، رتّبها، أخفِ اللي ما بدك ياه، و«حدّث الكل».</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></span><h3 data-i="f5t">البحث والاكتشاف</h3><p data-i="f5">ابحث عن أي تطبيق بين السورسات والويب من مكان واحد.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span><h3 data-i="f6t">التنزيلات</h3><p data-i="f6">تقدّم حقيقي، إلغاء بأي وقت، بتكمّل بالخلفية لو سكّرت التطبيق، وإشعار لما تخلص.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="4"/><circle cx="8" cy="12" r="1.5"/><path d="M13 12h4"/></svg></span><h3 data-i="f7t">Live Activity و Dynamic Island</h3><p data-i="f7">تابع التنزيل والتثبيت من شاشة القفل والجزيرة.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M14 4l6 6-10 10H4v-6z"/><path d="M12 6l6 6"/></svg></span><h3 data-i="f8t">محرّر IPA وحقن الإضافات</h3><p data-i="f8">عدّل الاسم والأيقونة والـBundle ID وحقن إضافات (tweaks) اللي بتختارها أنت.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/><path d="m9 12 2 2 4-4"/></svg></span><h3 data-i="f9t">توقيع التطبيقات بشهادة</h3><p data-i="f9">استورد شهادتك P12 وملف mobileprovision، وقّع أي IPA وصدّره. كل شي محلي ومحفوظ بالـKeychain.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg></span><h3 data-i="f10t">مكتبة تطبيقاتك</h3><p data-i="f10">مكان مستقل لملفات الـIPA تبعك، الموقّعة وغير الموقّعة.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="3"/><rect x="8" y="6" width="3" height="3" rx="1"/><rect x="13" y="6" width="3" height="3" rx="1"/><path d="M12 13v5M9.5 15.5h5"/></svg></span><h3 data-i="f11t">أيقونات الشاشة الرئيسية</h3><p data-i="f11">أضف تطبيقات الحاوية لشاشتك الرئيسية باسمها وأيقونتها.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14.9-4M4 4v4h4M4 13a8 8 0 0 0 14.9 4M20 20v-4h-4"/></svg></span><h3 data-i="f12t">الاختصارات والتجديد التلقائي</h3><p data-i="f12">إجراء «Refresh All Apps» بتطبيق الاختصارات يجدّد كل تطبيقاتك تلقائياً.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4M12 7v6M9.5 9.5 12 7l2.5 2.5"/></svg></span><h3 data-i="f13t">رفع من الكمبيوتر</h3><p data-i="f13">اسحب ملف IPA من متصفح الكمبيوتر على نفس الواي فاي.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/><path d="M5 21h14"/></svg></span><h3 data-i="f14t">تحديث ذاتي</h3><p data-i="f14">مرسى بيخبرك بكل نسخة جديدة، وزر «حدّث مرسى» بالإعدادات بيثبّتها فوراً.</p></article>
+            <article class="x-feat x-glass x-up"><span class="x-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="#fff" stroke="none"/></svg></span><h3 data-i="f15t">ثيمين ولغتين</h3><p data-i="f15">زجاج سائل أو كلاسيكي، عربي وإنجليزي، وتخطيط شاشة رئيسية اختياري.</p></article>
+          </div>
+        </section>
+
+        <section class="x-sec" id="install">
+          <div class="x-head x-up">
+            <p class="x-eyebrow" data-i="iEye">طريقة التثبيت</p>
+            <h2 data-i="iTitle">ست خطوات، ومرسى على آيفونك.</h2>
+          </div>
+          <div class="x-install">
+            <ol class="x-steps">
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s1">حمّل Mirsa-Setup.ipa من الزر فوق.</div></li>
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s2">ثبّته بأي موقّع على الآيفون مثل ESign أو Feather.</div></li>
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s3">افتح «Mirsa Setup» وسجّل دخول بحساب Apple ID تبعك.</div></li>
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s4">شغّل LocalDevVPN وخليك على الواي فاي، وجهّز ملف الاقتران (الإعدادات › الخصوصية والأمان › وضع المطوّر › الاقتران).</div></li>
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s5">اضغط تثبيت، وSetup بيثبّت مرسى الحقيقي بحسابك وبينقل الدخول والاقتران.</div></li>
+              <li class="x-up"><span class="x-num" aria-hidden="true"></span><div class="x-step x-glass" data-i="s6">خلص! بعدها مرسى بيحدّث حاله لحاله.</div></li>
+            </ol>
+            <div class="x-side">
+              <div class="x-card x-glass x-up">
+                <h3 data-i="reqT">المتطلبات</h3>
+                <ul class="x-req">
+                  <li data-i="r1">آيفون مع وضع المطوّر مفعّل</li>
+                  <li data-i="r2">حساب Apple ID (مجاني أو مدفوع)</li>
+                  <li data-i="r3">اتصال Wi-Fi</li>
+                  <li data-i="r4">تطبيق LocalDevVPN</li>
+                  <li data-i="r5">ملف اقتران</li>
+                </ul>
+              </div>
+              <div class="x-card x-glass x-tip x-up">
+                <h3 data-i="tipT">نصيحة</h3>
+                <p data-i="tip">ضيف سورس مرسى بـFeather أو ESign لتجيك تحديثات Setup:</p>
+                <div class="x-copy"><code>https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json</code><button class="x-copybtn" type="button" data-copy="https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json">نسخ</button></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="x-sec" id="sources">
+          <div class="x-head x-up">
+            <p class="x-eyebrow" data-i="soEye">السورسات المدموجة</p>
+            <h2 data-i="soTitle">أربع سورسات جاهزة من أول تشغيل.</h2>
+            <p class="x-sub" data-i="soSub">انسخ أي رابط لتضيفه بموقّع تاني.</p>
+          </div>
+          <div class="x-sources">
+            <div class="x-source x-glass x-up"><h3>AppTesters</h3><div class="x-copy"><code>https://repository.apptesters.org</code><button class="x-copybtn" type="button" data-copy="https://repository.apptesters.org">نسخ</button></div></div>
+            <div class="x-source x-glass x-up"><h3>Mirsa</h3><div class="x-copy"><code>https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json</code><button class="x-copybtn" type="button" data-copy="https://github.com/Alaaaya/Mirsa/releases/download/setup/source.json">نسخ</button></div></div>
+            <div class="x-source x-glass x-up"><h3>itslevii</h3><div class="x-copy"><code>https://itslevii.dev/repo.json</code><button class="x-copybtn" type="button" data-copy="https://itslevii.dev/repo.json">نسخ</button></div></div>
+            <div class="x-source x-glass x-up"><h3>ryP0</h3><div class="x-copy"><code>https://raw.githubusercontent.com/Sami-Wali/ryP0-repository/main/repo.json</code><button class="x-copybtn" type="button" data-copy="https://raw.githubusercontent.com/Sami-Wali/ryP0-repository/main/repo.json">نسخ</button></div></div>
+          </div>
+        </section>
+
+        <section class="x-sec" id="refresh">
+          <div class="x-card x-glass x-up" style="padding: clamp(24px, 5vw, 40px); gap: 18px">
+            <div class="x-head">
+              <p class="x-eyebrow" data-i="rEye">التجديد التلقائي</p>
+              <h2 data-i="rTitle">تطبيقات حساب Apple المجاني بتنتهي بعد ٧ أيام.</h2>
+              <p class="x-sub" data-i="rSub">بتطبيق الاختصارات اعمل أتمتة وقت الشحن:</p>
+            </div>
+            <ol class="x-flow">
+              <li data-i="rf1">وصّل LocalDevVPN</li>
+              <li class="x-arrow" aria-hidden="true">←</li>
+              <li data-i="rf2">إجراء Mirsa «Refresh All Apps»</li>
+              <li class="x-arrow" aria-hidden="true">←</li>
+              <li data-i="rf3">افصل الـVPN</li>
+            </ol>
+            <p data-i="rNote">فعّل إشعارات مرسى لتعرف النتيجة.</p>
+          </div>
+        </section>
+
+        <section class="x-sec" id="faq">
+          <div class="x-head x-up">
+            <p class="x-eyebrow" data-i="qEye">أسئلة شائعة</p>
+            <h2 data-i="qTitle">عندك سؤال؟ غالباً جوابه هون.</h2>
+          </div>
+          <div class="x-faq">
+            <details class="x-glass x-up"><summary data-i="q1">هل بدي كمبيوتر؟</summary><p data-i="a1">لا، كل شي من الآيفون. الكمبيوتر بس اختياري لرفع الملفات.</p></details>
+            <details class="x-glass x-up"><summary data-i="q2">ليش الواي فاي و LocalDevVPN؟</summary><p data-i="a2">مرسى بيحكي مع الآيفون نفسه عبر شبكة محلية لحتى يثبّت التطبيقات.</p></details>
+            <details class="x-glass x-up"><summary data-i="q3">شو الفرق بين الحاوية والتثبيت الحقيقي؟</summary><p data-i="a3">الحقيقي بيطلع تطبيق مستقل وبيحسب من حدّ Apple، والحاوية بتشغّل التطبيقات من جوّا مرسى بلا حدود.</p></details>
+            <details class="x-glass x-up"><summary data-i="q4">كل قديش لازم جدّد؟</summary><p data-i="a4">كل ٧ أيام بالحساب المجاني، ومرسى بيجدّد تلقائياً أو عبر الاختصارات.</p></details>
+            <details class="x-glass x-up"><summary data-i="q5">هل بياناتي آمنة؟</summary><p data-i="a5">بيانات الدخول والشهادات محفوظة بالـKeychain على جهازك ومش مرفوعة لأي سيرفر.</p></details>
+            <details class="x-glass x-up"><summary data-i="q6">كيف بحدّث مرسى؟</summary><p data-i="a6">لحاله بيطلعلك تنبيه، أو من الإعدادات › «حدّث مرسى».</p></details>
+            <details class="x-glass x-up"><summary data-i="q7">هل التطبيقات اللي بالسورسات تبع مرسى؟</summary><p data-i="a7">لا، السورسات من أطراف ثالثة ومسؤوليتها على أصحابها.</p></details>
+          </div>
+        </section>
+
+        <section class="x-sec" id="about">
+          <div class="x-about x-glass x-up">
+            <img class="x-icon" src="mirsa-icon.png" alt="أيقونة مرسى" data-i-alt="iconAlt2" />
+            <div class="x-about__copy">
+              <p class="x-eyebrow" data-i="abEye">عن المطوّر</p>
+              <h2 data-i="abTitle">مرسى — من تطوير Alaa</h2>
+              <div class="x-actions">
+                <a class="x-btn" href="https://x.com/rasmtk30" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.8 3h3.1l-6.8 7.7L22 21h-6.2l-4.9-6.3L5.3 21H2.2l7.2-8.3L2 3h6.3l4.4 5.8zm-1.1 16.2h1.7L7.4 4.7H5.5z"/></svg><span dir="ltr">@rasmtk30</span></a>
+                <a class="x-btn" href="https://github.com/Alaaaya/Mirsa-iOS" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 4.9.4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg><span>GitHub</span></a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="x-sec" id="get">
+          <div class="x-cta x-glass x-up">
+            <img class="x-icon" src="mirsa-icon.png" alt="" />
+            <h2 class="x-shimmer" data-i="ctaTitle">جاهز تبلّش؟</h2>
+            <p data-i="ctaSub">حمّل مرسى وثبّت تطبيقاتك على الآيفون مباشرة، بدون كمبيوتر.</p>
+            <div class="x-actions">
+              <a class="x-btn x-btn--main" href="https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg><span data-i="ctaMain">حمّل مرسى</span></a>
+              <a class="x-btn" href="https://github.com/Alaaaya/Mirsa-iOS/releases/latest/download/Mirsa.ipa" data-i="ctaSec">آخر إصدار من Mirsa.ipa</a>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="x-foot">
+        <p><strong>© 2026 Mirsa</strong> · <span data-i="version2">الإصدار 1.3.78</span></p>
+        <p class="x-small" data-i="libs">يستخدم مكتبات مفتوحة المصدر: isideload (MIT)، idevice (MIT)، apple-codesign-quick (LGPL-2.1-or-later).</p>
+        <p class="x-small" data-i="notApple">مرسى غير تابع لشركة Apple.</p>
+      </footer>
+    </div>
+    <script src="hark.js"></script>
+    <script>
+      (function () {
+        var T = {
+          ar: {},
+          en: {
+            brand: "Mirsa", nFeat: "Features", nInstall: "Install", nSources: "Sources", nRefresh: "Refresh", nFaq: "FAQ", nAbout: "Developer",
+            iconAlt: "Mirsa app icon", iconAlt2: "Mirsa icon", tilesAria: "Highlights",
+            version: "Version 1.3.78", version2: "Version 1.3.78", title: "Mirsa",
+            heroSub: "Install apps on your iPhone directly, no computer needed.",
+            heroLine: "An unlimited container, ready-made sources, signing with your own certificate, and automatic updates — all from inside your iPhone.",
+            ctaMain: "Download Mirsa", ctaSec: "Latest Mirsa.ipa release",
+            t1: "Apps in the container", t2: "Real apps with a free Apple account", t3: "Ready-made sources", t4: "Automatic refresh every week",
+            tr1: "No computer needed", tr2: "Your data stays in the Keychain", tr3: "Works with a free Apple ID", tr4: "Arabic & English",
+            phoneAria: "Preview of the Mirsa home screen", phApps: "Your apps", phRefresh: "Auto refresh", phDays: "6 days",
+            m1: "Apple ID", m2: "Real installs", m3: "Container", m4: "Sources", m5: "IPA editor", m6: "Tweak injection", m7: "P12 signing", m8: "Shortcuts", m9: "Self-updating", m10: "Liquid Glass",
+            ctaTitle: "Ready to start?", ctaSub: "Download Mirsa and install apps on your iPhone directly, no computer needed.",
+            fEye: "Features", fTitle: "Everything you need to install and manage your apps, in one place.", beta: "Beta",
+            f1t: "Apple ID sign-in", f1: "Sign in with your account and two-factor authentication. Your data stays in the Keychain, on your device only.",
+            f2t: "Real installs", f2: "Signs the app with your free account's certificate and installs it straight onto your iPhone (Apple's free limit: 3 apps and 10 App IDs a week; adjustable for paid accounts).",
+            f3t: "The Container", f3: "Run an unlimited number of apps inside Mirsa without counting against Apple's limit.",
+            f4t: "Sources", f4: "4 sources built in from first launch (AppTesters, Mirsa, itslevii, ryP0). Add any source, reorder them, hide the ones you don't want, and “Refresh All”.",
+            f5t: "Search & discover", f5: "Search for any app across your sources and the web, from one place.",
+            f6t: "Downloads", f6: "Real progress, cancel anytime, keeps going in the background if you close the app, and a notification when it's done.",
+            f7t: "Live Activity & Dynamic Island", f7: "Follow downloads and installs from the Lock Screen and the Island.",
+            f8t: "IPA editor & tweak injection", f8: "Change the name, icon and Bundle ID, and inject the tweaks you choose.",
+            f9t: "Certificate signing", f9: "Import your P12 certificate and mobileprovision file, sign any IPA and export it. Everything stays local, saved in the Keychain.",
+            f10t: "Your app library", f10: "A separate home for your IPA files, signed and unsigned.",
+            f11t: "Home Screen icons", f11: "Add container apps to your Home Screen with their own name and icon.",
+            f12t: "Shortcuts & auto refresh", f12: "The “Refresh All Apps” action in the Shortcuts app refreshes all your apps automatically.",
+            f13t: "Upload from a computer", f13: "Drag an IPA from your computer's browser over the same Wi-Fi.",
+            f14t: "Self-updating", f14: "Mirsa tells you about every new version, and the “Update Mirsa” button in Settings installs it instantly.",
+            f15t: "Two themes, two languages", f15: "Liquid Glass or Classic, Arabic and English, plus an optional Home Screen layout.",
+            iEye: "How to install", iTitle: "Six steps, and Mirsa is on your iPhone.",
+            s1: "Download Mirsa-Setup.ipa from the button above.",
+            s2: "Install it with any on-device signer, such as ESign or Feather.",
+            s3: "Open “Mirsa Setup” and sign in with your Apple ID.",
+            s4: "Turn on LocalDevVPN, stay on Wi-Fi, and have your pairing file ready (Settings › Privacy & Security › Developer Mode › Pairing).",
+            s5: "Tap Install: Setup installs the real Mirsa with your account and carries over your sign-in and pairing.",
+            s6: "Done! From then on, Mirsa updates itself.",
+            reqT: "Requirements", r1: "An iPhone with Developer Mode on", r2: "An Apple ID (free or paid)", r3: "A Wi-Fi connection", r4: "The LocalDevVPN app", r5: "A pairing file",
+            tipT: "Tip", tip: "Add the Mirsa source in Feather or ESign to get Setup updates:",
+            soEye: "Built-in sources", soTitle: "Four sources, ready from first launch.", soSub: "Copy any link to add it in another signer.",
+            rEye: "Auto refresh", rTitle: "Apps on a free Apple account expire after 7 days.", rSub: "In the Shortcuts app, create a “When charging” automation:",
+            rf1: "Connect LocalDevVPN", rf2: "Mirsa action “Refresh All Apps”", rf3: "Disconnect the VPN", rNote: "Turn on Mirsa notifications to see the result.",
+            qEye: "FAQ", qTitle: "Got a question? The answer is probably here.",
+            q1: "Do I need a computer?", a1: "No, everything happens on the iPhone. A computer is only optional, for uploading files.",
+            q2: "Why Wi-Fi and LocalDevVPN?", a2: "Mirsa talks to the iPhone itself over a local network so it can install apps.",
+            q3: "What's the difference between the Container and real installs?", a3: "A real install becomes a standalone app and counts against Apple's limit; the Container runs apps inside Mirsa with no limit.",
+            q4: "How often do I need to refresh?", a4: "Every 7 days on a free account. Mirsa refreshes automatically or through Shortcuts.",
+            q5: "Is my data safe?", a5: "Your sign-in data and certificates are kept in the Keychain on your device and never uploaded to any server.",
+            q6: "How do I update Mirsa?", a6: "It alerts you by itself, or go to Settings › “Update Mirsa”.",
+            q7: "Are the apps in the sources made by Mirsa?", a7: "No. Sources come from third parties, who are responsible for them.",
+            abEye: "Developer", abTitle: "Mirsa — developed by Alaa",
+            libs: "Uses open-source libraries: isideload (MIT), idevice (MIT), apple-codesign-quick (LGPL-2.1-or-later).",
+            notApple: "Mirsa is not affiliated with Apple.",
+            _copy: "Copy", _copied: "Copied", _toggle: "عربي", _toggleAria: "التبديل إلى العربية", _docTitle: "Mirsa · Install apps on iPhone"
+          }
+        };
+        var root = document.documentElement;
+        var texts = document.querySelectorAll("[data-i]"), alts = document.querySelectorAll("[data-i-alt]"), arias = document.querySelectorAll("[data-i-aria]");
+        texts.forEach(function (el) { T.ar[el.getAttribute("data-i")] = el.innerHTML; });
+        alts.forEach(function (el) { T.ar[el.getAttribute("data-i-alt")] = el.getAttribute("alt"); });
+        arias.forEach(function (el) { T.ar[el.getAttribute("data-i-aria")] = el.getAttribute("aria-label"); });
+        T.ar._copy = "نسخ"; T.ar._copied = "تم النسخ"; T.ar._toggle = "EN"; T.ar._toggleAria = "Switch to English"; T.ar._docTitle = document.title;
+        var lang = "ar", btn = document.getElementById("x-lang");
+        function apply() {
+          var d = T[lang];
+          root.lang = lang; root.dir = lang === "ar" ? "rtl" : "ltr";
+          texts.forEach(function (el) { var k = el.getAttribute("data-i"); if (d[k] != null) el.innerHTML = d[k]; });
+          alts.forEach(function (el) { el.alt = d[el.getAttribute("data-i-alt")]; });
+          arias.forEach(function (el) { el.setAttribute("aria-label", d[el.getAttribute("data-i-aria")]); });
+          document.querySelectorAll(".x-copybtn").forEach(function (b) { b.textContent = b.classList.contains("is-done") ? d._copied : d._copy; });
+          btn.textContent = d._toggle; btn.setAttribute("aria-label", d._toggleAria); document.title = d._docTitle;
+          figs.forEach(function (el) { if (!el._counting) setFig(el, +el.getAttribute("data-count")); });
+        }
+
+        var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var figs = document.querySelectorAll("[data-count]");
+        function setFig(el, n) {
+          var num = lang === "ar" ? String(n).replace(/\d/g, function (c) { return "٠١٢٣٤٥٦٧٨٩"[c]; }) : String(n);
+          el.textContent = num + (el.getAttribute("data-unit-" + lang) || "");
+        }
+        function countUp(el) {
+          var target = +el.getAttribute("data-count");
+          if (reduce) { setFig(el, target); return; }
+          var t0 = null, dur = 1200; el._counting = true;
+          function step(t) {
+            if (t0 === null) t0 = t;
+            var p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+            setFig(el, Math.round(target * e));
+            if (p < 1) requestAnimationFrame(step); else el._counting = false;
+          }
+          requestAnimationFrame(step);
+        }
+
+        var nav = document.querySelector(".x-nav");
+        function onScroll() { nav.classList.toggle("is-scrolled", window.scrollY > 24); }
+        window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+        document.querySelectorAll(".x-faq details").forEach(function (d) {
+          var s = d.querySelector("summary"), anim = null;
+          s.addEventListener("click", function (e) {
+            if (reduce || !d.animate) return;
+            e.preventDefault();
+            if (anim) { anim.cancel(); anim = null; }
+            var start = d.offsetHeight, end, opening = !d.open || d.classList.contains("is-closing");
+            if (opening) { d.classList.remove("is-closing"); d.open = true; end = d.offsetHeight; }
+            else { d.classList.add("is-closing"); end = s.offsetHeight + (d.offsetHeight - d.clientHeight); }
+            anim = d.animate({ height: [start + "px", end + "px"] }, { duration: 380, easing: "cubic-bezier(.2,.8,.2,1)" });
+            anim.onfinish = function () { anim = null; if (!opening) { d.open = false; d.classList.remove("is-closing"); } };
+          });
+        });
+        btn.addEventListener("click", function () { lang = lang === "ar" ? "en" : "ar"; apply(); });
+
+        document.querySelectorAll(".x-copybtn").forEach(function (b) {
+          var timer;
+          b.addEventListener("click", function () {
+            var text = b.getAttribute("data-copy");
+            var done = function () {
+              b.classList.add("is-done"); b.textContent = T[lang]._copied;
+              clearTimeout(timer);
+              timer = setTimeout(function () { b.classList.remove("is-done"); b.textContent = T[lang]._copy; }, 1800);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(text).then(done, function () { fallback(text); done(); });
+            } else { fallback(text); done(); }
+          });
+        });
+        function fallback(text) {
+          var ta = document.createElement("textarea");
+          ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+          document.body.appendChild(ta); ta.select();
+          try { document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(ta);
+        }
+
+        if ("IntersectionObserver" in window) {
+          root.classList.add("x-js");
+          var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) {
+              if (!e.isIntersecting) return;
+              e.target.classList.add("is-in"); io.unobserve(e.target);
+              var f = e.target.querySelector("[data-count]"); if (f) countUp(f);
+            });
+          }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+          document.querySelectorAll(".x-up").forEach(function (el, i) { el.style.transitionDelay = (i % 3) * 70 + "ms"; io.observe(el); });
+        } else {
+          document.querySelectorAll(".x-up").forEach(function (el) { el.classList.add("is-in"); });
+        }
+      })();
+    </script>
+  </body>
+</html>
