@@ -6,7 +6,7 @@ from pathlib import Path
 import subprocess
 import urllib.request
 
-UPSTREAM = "https://github.com/Alaaaya/AirCard-iOS/releases/download/setup/"
+UPSTREAM = "https://github.com/Alaaaya/Mirsa-iOS/releases/download/setup/"
 PUBLIC = "https://github.com/Alaaaya/Mirsa/releases/download/setup/"
 OUT = Path("mirror")
 OUT.mkdir(exist_ok=True)
