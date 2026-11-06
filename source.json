@@ -8,18 +8,18 @@
       "developerName": "Alaa",
       "iconURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa.png",
       "localizedDescription": "Installs Mirsa with your Apple ID.",
-      "version": "1.3.73",
-      "versionDate": "2026-11-06T03:11:13Z",
+      "version": "1.3.75",
+      "versionDate": "2026-11-06T03:28:39Z",
       "downloadURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa",
-      "size": 11990033,
+      "size": 12200342,
       "versions": [
         {
-          "version": "1.3.73",
-          "buildVersion": "1.3.73",
-          "date": "2026-11-06T03:11:13Z",
+          "version": "1.3.75",
+          "buildVersion": "1.3.75",
+          "date": "2026-11-06T03:28:39Z",
           "downloadURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa",
-          "size": 11990033,
-          "localizedDescription": "Mirsa Setup 1.3.73",
+          "size": 12200342,
+          "localizedDescription": "Mirsa Setup 1.3.75",
           "minOSVersion": "18.0"
         }
       ]
