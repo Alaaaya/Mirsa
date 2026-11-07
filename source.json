@@ -8,19 +8,22 @@
       "developerName": "Alaa",
       "iconURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa.png",
       "localizedDescription": "Installs Mirsa with your Apple ID.",
-      "version": "1.3.111",
-      "versionDate": "2026-11-07T11:55:35Z",
+      "version": "1.3.116",
+      "versionDate": "2026-11-07T12:42:11Z",
       "downloadURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa",
-      "size": 14778423,
+      "size": 14778458,
       "versions": [
         {
-          "version": "1.3.111",
-          "buildVersion": "3.11.1",
-          "date": "2026-11-07T11:55:35Z",
+          "version": "1.3.116",
+          "buildVersion": "3.16.1",
+          "date": "2026-11-07T12:42:11Z",
           "downloadURL": "https://github.com/Alaaaya/Mirsa/releases/download/setup/Mirsa-Setup.ipa",
-          "size": 14778423,
-          "releaseNotes": {},
-          "localizedDescription": "Mirsa Setup 1.3.111",
+          "size": 14778458,
+          "releaseNotes": {
+            "en": "Fixed the \"Extraction destination must not exist\" error that broke self-update and Sign & Install with your own certificate. Updates and signing now extract into a fresh folder, and sign results show clearly in an alert.",
+            "ar": "\u0635\u0644\u0651\u062d\u0646\u0627 \u062e\u0637\u0623 \u00abExtraction destination must not exist\u00bb \u0627\u0644\u0644\u064a \u0643\u0627\u0646 \u0628\u064a\u0639\u0637\u0651\u0644 \u0627\u0644\u062a\u062d\u062f\u064a\u062b \u0627\u0644\u0630\u0627\u062a\u064a \u0648\u0627\u0644\u062a\u0648\u0642\u064a\u0639 \u0648\u0627\u0644\u062a\u062b\u0628\u064a\u062a \u0628\u0634\u0647\u0627\u062f\u062a\u0643. \u0647\u0644\u0642 \u0627\u0644\u0627\u0633\u062a\u062e\u0631\u0627\u062c \u0628\u064a\u0635\u064a\u0631 \u0628\u0645\u062c\u0644\u062f \u062c\u062f\u064a\u062f\u060c \u0648\u0646\u062a\u064a\u062c\u0629 \u0627\u0644\u062a\u0648\u0642\u064a\u0639 \u0628\u062a\u0638\u0647\u0631 \u0628\u0648\u0636\u0648\u062d \u0628\u062a\u0646\u0628\u064a\u0647."
+          },
+          "localizedDescription": "Mirsa Setup 1.3.116",
           "minOSVersion": "18.0"
         }
       ]
