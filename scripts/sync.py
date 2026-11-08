@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import subprocess
 import urllib.request
+from normal_entry import normal_entry
 
 UPSTREAM = "https://github.com/Alaaaya/Mirsa-iOS/releases/download/setup/"
 PUBLIC = "https://github.com/Alaaaya/Mirsa/releases/download/setup/"
@@ -35,6 +36,14 @@ for version in app.get("versions", []):
     version["localizedDescription"] = "Mirsa Setup " + version["version"]
 source["name"] = "Mirsa"
 source["iconURL"] = PUBLIC + "Mirsa.png"  # source icon (Feather, SideStore, Mirsa)
+# Resolve the immutable normal asset for THIS setup version, never latest.
+release_url = "https://api.github.com/repos/Alaaaya/Mirsa-iOS/releases/tags/" + app["version"]
+release = json.loads(download(release_url))
+normal_asset = next(a for a in release["assets"] if a["name"] == "Mirsa.ipa")
+normal_ipa = download(normal_asset["browser_download_url"])
+normal = normal_entry(app, release, normal_ipa)
+source["apps"] = [a for a in source["apps"] if a["bundleIdentifier"] != "com.alaa.mirsa"]
+source["apps"].insert(1, normal)
 # Repository-owned entries survive every upstream refresh.
 extra_apps = json.loads(Path("extra-apps.json").read_text())
 seen = {entry["bundleIdentifier"] for entry in source["apps"]}
