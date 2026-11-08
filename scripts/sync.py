@@ -52,6 +52,14 @@ for extra in extra_apps:
     assert extra["downloadURL"].startswith(PUBLIC), "Extra apps must use Mirsa assets"
     source["apps"].append(extra)
     seen.add(extra["bundleIdentifier"])
+# Apply repository-owned screenshot metadata after deriving independent entries.
+screenshot_map = json.loads(Path("screenshots.json").read_text())
+for entry in source["apps"]:
+    urls = screenshot_map.get(entry["bundleIdentifier"])
+    if urls is not None:
+        assert all(url.startswith("https://") for url in urls)
+        entry["screenshotURLs"] = urls
+        entry["screenshots"] = {"iphone": urls}
 encoded = (json.dumps(source, indent=2) + "\n").encode()
 assert b"aircard" not in encoded.lower()
 (OUT / "source.json").write_bytes(encoded)
