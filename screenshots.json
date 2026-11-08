@@ -2,5 +2,12 @@
   "com.alaa.mirsa.setup": [
     "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa-setup/01.jpg",
     "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa-setup/02.jpg"
+  ],
+  "com.alaa.mirsa": [
+    "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa/01.jpg",
+    "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa/02.jpg",
+    "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa/03.jpg",
+    "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa/04.jpg",
+    "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/screenshots/mirsa/05.jpg"
   ]
 }
