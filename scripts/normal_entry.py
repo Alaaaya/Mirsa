@@ -19,8 +19,16 @@ def normal_entry(setup, release, ipa):
         info = plistlib.loads(archive.read(next(n for n in archive.namelist()
             if n.startswith("Payload/") and n.count("/") == 2 and n.endswith("/Info.plist"))))
     assert info["CFBundleIdentifier"] == "com.alaa.mirsa", "Wrong normal bundle"
-    # Normal short version is historical; the production build stamp tracks release.
-    assert str(info["MirsaBuild"]) == version.rsplit(".", 1)[1], "Wrong normal build"
+    # Short marketing versions are independent of the CI run number.
+    expected_build = setup["versions"][0].get("buildVersion")
+    if expected_build:
+        assert str(info["CFBundleVersion"]) == str(expected_build), "Wrong normal build"
+    else:
+        # Historical feeds did not always publish buildVersion.
+        assert str(info["MirsaBuild"]) == version.rsplit(".", 1)[1], "Wrong normal build"
+    if len(version.split(".")) == 2:
+        assert expected_build, "Short versions require an explicit setup build"
+        assert info.get("CFBundleShortVersionString") == version, "Wrong normal short version"
     entry = copy.deepcopy(setup)
     entry.update(name="Mirsa", bundleIdentifier="com.alaa.mirsa",
                  localizedDescription="Mirsa. Requires signing by your installer.",
