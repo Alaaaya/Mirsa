@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import subprocess
 import urllib.request
+import urllib.parse
 from latest_normal import latest_normal
 
 UPSTREAM = "https://github.com/Alaaaya/Mirsa-iOS/releases/download/setup/"
@@ -15,7 +16,20 @@ OUT.mkdir(exist_ok=True)
 def download(url):
     if not url.startswith("https://"):
         raise ValueError("HTTPS required")
-    with urllib.request.urlopen(url, timeout=120) as response:
+    # Use the workflow's repository token only on the GitHub API. Shared runner
+    # anonymous API limits are often exhausted. Never forward it to asset hosts.
+    headers = {"User-Agent": "Mirsa-source-sync"}
+    authenticated = urllib.parse.urlsplit(url).hostname == "api.github.com" and os.environ.get("GH_TOKEN")
+    if authenticated:
+        headers["Authorization"] = "Bearer " + os.environ["GH_TOKEN"]
+        class NoRedirect(urllib.request.HTTPRedirectHandler):
+            def redirect_request(self, *args, **kwargs):
+                raise ValueError("Authenticated API redirects are not allowed")
+        opener = urllib.request.build_opener(NoRedirect())
+        response = opener.open(urllib.request.Request(url, headers=headers), timeout=120)
+    else:
+        response = urllib.request.urlopen(urllib.request.Request(url, headers=headers), timeout=120)
+    with response:
         return response.read()
 
 source = json.loads(download(UPSTREAM + "source.json"))
