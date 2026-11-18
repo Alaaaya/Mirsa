@@ -9,6 +9,17 @@
   },
   "news": [
     {
+      "title": "مرسى 2.9 صار جاهز 💜",
+      "caption": "عدّلت التوقيع بالشهادة، مع تجهيز App Groups تلقائياً.\nالوصول للملفات صار شغّال من البداية.\nتعديل أيقونة التطبيق، ومعها الأيقونة الداكنة.\nكشف التويكات المحقونة مع تعطيل أو حذف المدعوم منها.\nآخر عنصر ما عاد يختفي تحت الشريط السفلي.\nومعه كل تعديلات 2.8.",
+      "imageURL": "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/mirsa-banner.jpg",
+      "tintColor": "7C83FF",
+      "date": "2026-11-18T19:31:58.062391Z",
+      "identifier": "mirsa-release-2.9",
+      "appID": "com.alaa.mirsa",
+      "url": "https://x.com/rasmtk30",
+      "notify": false
+    },
+    {
       "title": "مرسى 2.8 صار جاهز 💜",
       "caption": "شريط سفلي زجاجي جديد، ومرسى AI صار إله قسم لحاله.\nمتجر Apple صار مفتوح للكل.\nرجع البحث، وصار يدور بكل تطبيقات المصادر.\nتقدّم التنزيل بيبين عند نفس الزر.\nصانع Tendies صار لحد 8 صور بطبقات وحركات.\nتعديل الخلفيات الجاهزة، وحذف أسرع.\nوالإشعار المباشر ما عاد يعلق.",
       "imageURL": "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/mirsa-banner.jpg",
