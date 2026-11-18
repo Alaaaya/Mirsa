@@ -1,0 +1,45 @@
+{
+  "source": {
+    "iconURL": "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/mirsa-icon.png",
+    "headerURL": "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/mirsa-banner.jpg",
+    "tintColor": "7C83FF",
+    "subtitle": "تطبيقاتك وتويكاتك وخلفياتك بمكان واحد",
+    "description": "مرسى لتثبيت تطبيقات iPhone وإدارة السورسات والتويكات وخلفيات Tendies. من تطوير علاء. الأخبار والتواصل على X @rasmtk30.",
+    "website": "https://x.com/rasmtk30"
+  },
+  "news": [
+    {
+      "title": "أهلاً فيكم بمرسى 💜",
+      "caption": "أنا علاء، عملت مرسى حتى تجمعوا تطبيقاتكم وتويكاتكم وخلفيات Tendies بمكان واحد. هون بنزّل الجديد، وإذا عندكم اقتراح أو مشكلة احكولي على X https://x.com/rasmtk30",
+      "imageURL": "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/mirsa-banner.jpg",
+      "tintColor": "7C83FF",
+      "date": "2026-11-18T00:11:35Z",
+      "identifier": "mirsa-welcome-2026",
+      "appID": "com.alaa.mirsa",
+      "url": "https://x.com/rasmtk30",
+      "notify": false
+    }
+  ],
+  "apps": {
+    "com.alaa.mirsa": {
+      "tintColor": "7C83FF",
+      "screenshotURLs": [
+        "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/ar-home.jpg",
+        "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/ar-tools.jpg",
+        "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/en-home.jpg",
+        "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/en-tools.jpg"
+      ],
+      "screenshots": {
+        "iphone": [
+          "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/ar-home.jpg",
+          "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/ar-tools.jpg",
+          "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/en-home.jpg",
+          "https://raw.githubusercontent.com/Alaaaya/Mirsa/main/assets/branding/en-tools.jpg"
+        ]
+      }
+    },
+    "com.alaa.mirsa.setup": {
+      "tintColor": "7C83FF"
+    }
+  }
+}

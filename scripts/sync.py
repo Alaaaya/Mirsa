@@ -7,6 +7,7 @@ import subprocess
 import urllib.request
 import urllib.parse
 from latest_normal import latest_normal
+from source_branding import apply_branding
 
 UPSTREAM = "https://github.com/Alaaaya/Mirsa-iOS/releases/download/setup/"
 PUBLIC = "https://github.com/Alaaaya/Mirsa/releases/download/setup/"
@@ -74,6 +75,8 @@ for entry in source["apps"]:
         assert all(url.startswith("https://") for url in urls)
         entry["screenshotURLs"] = urls
         entry["screenshots"] = {"iphone": urls}
+# Presentation is repository-owned and survives every upstream refresh.
+source = apply_branding(source, json.loads(Path('branding.json').read_text()))
 encoded = (json.dumps(source, indent=2) + "\n").encode()
 assert b"aircard" not in encoded.lower()
 (OUT / "source.json").write_bytes(encoded)
