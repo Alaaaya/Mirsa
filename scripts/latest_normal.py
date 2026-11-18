@@ -10,7 +10,7 @@ from normal_entry import normal_entry
 def latest_normal(setup, release, ipa):
     assert not release.get("draft") and not release.get("prerelease")
     version = release["tag_name"]
-    assert len(version.split(".")) == 2 and all(n.isdigit() for n in version.split("."))
+    assert len(version.split(".")) in (2, 3) and all(n.isdigit() for n in version.split("."))
     assert tuple(map(int, version.split("."))) >= tuple(map(int, setup["version"].split(".")))
     metadata = json.loads(release["body"])
     notes = metadata["releaseNotes"]
