@@ -58,7 +58,9 @@ normal_asset = next(a for a in release["assets"] if a["name"] == "Mirsa.ipa")
 normal_ipa = download(normal_asset["browser_download_url"])
 normal = latest_normal(app, release, normal_ipa)
 source["apps"] = [a for a in source["apps"] if a["bundleIdentifier"] != "com.alaa.mirsa"]
-source["apps"].insert(1, normal)
+# Legacy installed updaters select the first com.alaa.mirsa prefix match.
+# Keep normal before Setup without altering either independent entry.
+source["apps"].insert(0, normal)
 # Repository-owned entries survive every upstream refresh.
 extra_apps = json.loads(Path("extra-apps.json").read_text())
 seen = {entry["bundleIdentifier"] for entry in source["apps"]}
